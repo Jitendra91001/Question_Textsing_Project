@@ -2,26 +2,31 @@ import React, { useState } from 'react'
 import Input from '../input/Input'
 import Questions from '../Question/Questions'
 import Label from '../Label/Label'
-import Select from '../Select/Select'
+import Dropdown from '../../Dropdown/Dropdown'
 
 const DynamicQuestion = () => {
-
     //generate the Dynamic questions
     const [numOfQuestions, setnumOfQuestions] = useState(0)
+    //totoal question in Dynamic Questions
 
+    //dynamic created in Select box
     //generate the mcqQuestions in Dynamic
     const [mcqQestions, setmcqQestions] = useState([])
-
+    const [selectedTech, setSelectedTech] = useState([])
     //graterThan the equtions in 
-
-    const [render, setrender] = useState(false)
-    const [selectedValue,setSelectedValue]=useState([])
-    const [selectMCQ,setSelectMCQ]=useState([])
-    //dynamic created in Select box
     let options = ["React", "MongoDB", "Express", "Node", "Java"]
-
+    const [render, setrender] = useState(false)
+    const [selectedValue, setSelectedValue] = useState([[...options]])
+    // console.log(selectedValue)
     //selective question
-    let selectQuestion = ["MCQ", "Programming", "Descriptive"]
+    // let selectQuestion = ["Choose Mode", "MCQ", "Programming", "Descriptive"]
+    // let totalquestionsSum=store.discreptive+store.mcq+store.programing;
+    const [store, setStore] = useState({
+        total: 0,
+        mcq: 0,
+        programing: 0,
+        discreptive: 0
+    })
 
     const Addquestion = () => {
         let mcqQestionsBaseStructure = {
@@ -29,76 +34,60 @@ const DynamicQuestion = () => {
             options: [],
             answer: ''
         }
-
         setmcqQestions([...mcqQestions, mcqQestionsBaseStructure])
-
         if ([...mcqQestions, mcqQestionsBaseStructure].length > numOfQuestions - 1)
             setrender(true)
     }
-
     const handleChange = (e) => {
-        // setSelectedValue({...selectedValue,firstSelect:[...selectedValue.firstSelect,e.target.value]})
-        setSelectedValue(e.target.value)
+        setSelectedTech([...selectedTech, e.target.value]);
     }
-
-    //select mcq questions
-
-    const SelectMCQ = (e) => {
-        let filteredData = selectQuestion.filter(item => item == e.target.value)
-        // setSelectedValue({...selectedValue,secondSelect:[...selectedValue.secondSelect,e.target.value]})
-        // console.log(selectedValue.secondSelect)
-        setSelectMCQ(e.target.value)
-        console.log(selectMCQ)
+    //all select mode
+    const handleData = (e) => {
+        setStore((prev) => {
+            return { ...prev, [e.target.name]: parseInt(e.target.value) }
+        })
     }
-    return (
-        <>
+    const addTechnology = () => {
+        setSelectedValue([...selectedValue, options.filter(item => !selectedTech.includes(item))]);
+    }
+        return (
             <>
-                <div className='container-fluid'>
-                    <div className='row'>
-                        <div className='col-sm-6'>
-                            <div>
-                                <Label htmlData="NumberOfQuestions" labelData="Number of Questions :" />
-
-                                <Input
-                                    inputType="text"
-                                    inputPlaceholder="Enter the No of Question"
-                                    inputValue={numOfQuestions}
-                                    fieldChange={(e) => setnumOfQuestions(e.target.value)}
-                                    pattern="^[0-9]\d*$"
-                                    fieldErrorMessage="Please Enter the Positive number of zero"
-                                />
-                            </div>
-
-
-
-                            <Label htmlData="Technology" labelData="Technology" />
-
-                            <Select option={options} handleChange={handleChange} />
-
-                            {
-                                selectedValue.length != 0 &&
+                <>
+                    <div className='container-fluid'>
+                        <div className='row'>
+                            <div className='col-sm-6'>
                                 <div>
-                                    <Label htmlData="Select Mode" labelData="SelectMode" />
-                                    <Select option={selectQuestion} handleChange={SelectMCQ} />
+                                    <Label htmlData="NumberOfQuestions" labelData="Number of Questions :" />
+                                    <Input
+                                        inputType="text"
+                                        inputPlaceholder="Enter the No of Question"
+                                        inputValue={numOfQuestions}
+                                        fieldChange={handleData}
+                                        pattern="^[0-9]\d*$"
+                                        name="total"
+                                        fieldErrorMessage="Please Enter the Positive number of zero"
+                                    />
                                 </div>
-                            }
-                        </div>
-                        <div className='col-sm-6'>
-                            {
-                                render || numOfQuestions.length > 0 && <button className='btn btn-success mt-3' onClick={Addquestion}>Add questions</button>
-                            }
-
-                            {
-                                mcqQestions.map((ele) => {
-                                    return <Questions />
-                                })
-                            }
+                                {    
+                                    selectedValue.map(element => (
+                                        <Dropdown options={element} handleChange={handleChange} addTechnology={addTechnology} store={store} handleData={handleData} selectedValue={selectedValue} />
+                                    ))
+                                }
+                            </div>
+                            <div className='col-sm-6'>
+                                {
+                                    render || numOfQuestions.length > 0 && <button className='btn btn-success mt-3' onClick={Addquestion}>Add questions</button>
+                                }
+                                {
+                                    mcqQestions.map((ele) => {
+                                        return <Questions />
+                                    })
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
+                </>
             </>
-        </>
-    )
-}
-
-export default DynamicQuestion
+        )
+    }
+export default DynamicQuestion;

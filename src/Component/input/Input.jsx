@@ -9,7 +9,7 @@ const Input = ({ inputType, inputvalue,name,inputPlaceholder,fieldChange,pattern
     }
     return (
         <>
-        <input type={inputType} className='form-control mt-3' value={inputvalue} id={name} onChange={handleData} placeholder={inputPlaceholder}  />
+        <input type={inputType} className='form-control' value={inputvalue} name={name} onChange={handleData} placeholder={inputPlaceholder}  />
 
         {
             (isValidPattern!==null) && !isValidPattern && <span>{fieldErrorMessage}</span>

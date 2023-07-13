@@ -32,7 +32,7 @@ const Questions = () => {
         NumOfQuestions.map((ele,index)=>(
            <div key={index} className='ms-4'>
              <label>{String.fromCharCode(`${65+index}`)}</label>
-            &nbsp;&nbsp;&nbsp;<input type="radio" />
+            &nbsp;&nbsp;&nbsp;<input type="radio" name="input" style={{height:"15px" ,width:"15px"}}/>
            </div>
         ))
     }
