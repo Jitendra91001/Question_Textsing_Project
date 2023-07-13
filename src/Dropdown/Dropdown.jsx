@@ -5,8 +5,6 @@ import Select from '../Component/Select/Select'
 
 const Dropdown = ({handleChange,addTechnology, selectedValue, store,handleData, options}) => {
      //selective question
-   
-
      console.log("asd")
 
     const [selectMode, setSelectMode] = useState([])
