@@ -1,15 +1,15 @@
 import React from 'react'
 import Label from '../Label/Label'
 
-const CheckBox = ({checkbox}) => {
+const CheckBox = ({checkbox,onChange}) => {
   return (
     <>
     {
         checkbox.map((ele,index)=>(
-            <div>
-                <Label htmlData={ele.value} labelData={ele.key} key={index}/>
-            <input type='checkbox' value={ele.value}/>
-            </div>
+            <>
+                <Label htmlData={ele.value} labelData={ele.label}/>&nbsp;
+            <input type='checkbox' value={ele.value} onChange={onChange}/>&nbsp;&nbsp;
+            </>
         ))
     }
     </>

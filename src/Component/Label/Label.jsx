@@ -2,7 +2,7 @@ import React from 'react'
 
 const Label = ({htmlData,labelData}) => {
   return (
-    <label htmlFor={htmlData}>{labelData}</label>
+    <label htmlFor={htmlData} >{labelData}</label>
   )
 }
 

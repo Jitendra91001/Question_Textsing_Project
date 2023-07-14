@@ -2,18 +2,27 @@ import React,{useState} from 'react'
 import Input from '../Component/input/Input'
 import Label from '../Component/Label/Label'
 import Select from '../Component/Select/Select'
+import CheckBox from '../Component/Checkbox/CheckBox'
 
-const Dropdown = ({handleChange,addTechnology, selectedValue, store,handleData, options}) => {
+const Dropdown = ({handleChange,addTechnology,selectedValue, store,handleData, options}) => {
      //selective question
-     console.log("asd")
-
+     const checkbox=[
+        {value:"MCQ", label:"MCQ"},
+        {value:"Programming", label:"Programming"},
+        {value:"Descriptive", label:"Descriptive"},
+     ]
     const [selectMode, setSelectMode] = useState([])
      //select mcq questions
     
-     let selectQuestion = ["Choose Mode", "MCQ", "Programming", "Descriptive"]
+    //  let selectQuestion = ["Choose Mode", "MCQ", "Programming", "Descriptive"]
      let totalquestionsSum=store.discreptive+store.mcq+store.programing;
      const SelectMCQ = (e) => {
-        setSelectMode([...selectMode, e.target.value])
+        // setSelectMode([...selectMode, e.target.value])
+        if(e.target.checked){
+            setSelectMode([...selectMode,e.target.value])
+        }else{
+            setSelectMode([...selectMode.filter(item=>item!==e.target.value)])
+        }
     }
     return (
         <>
@@ -23,13 +32,17 @@ const Dropdown = ({handleChange,addTechnology, selectedValue, store,handleData, 
                     <Select option={options} handleChange={handleChange} />
                 </div >
             }
-            {
+            {/* {
                 selectedValue.length != 0 &&
                 <div>
                     <Label htmlData="Select Mode" labelData="SelectMode" />
                     <Select option={selectQuestion} handleChange={SelectMCQ} />
                 </div>
-            }
+            } */}
+
+            <div>
+                <CheckBox checkbox={checkbox} onChange={SelectMCQ}/>
+            </div>
             {
                 selectMode.includes('MCQ') &&
                 <div className=''>
@@ -53,7 +66,7 @@ const Dropdown = ({handleChange,addTechnology, selectedValue, store,handleData, 
             }
             {
 
-                (store.total == totalquestionsSum && store.total) ? (<button onClick={addTechnology} className='btn btn-success m-2'>Add Other Technology</button>) : ((totalquestionsSum > store.total) ? <span className='text-center'>grater the number of questions</span> : <span></span>)
+                (store.total == totalquestionsSum && store.total) ? (<button onClick={addTechnology} className='btn btn-success m-2'>Add Other Technology</button>) : ((totalquestionsSum > store.total) ? <span className='text-danger'>grater the number of questions</span> : <span></span>)
 
             }
         </>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { createContext, useState } from 'react'
 import Input from '../input/Input'
 import Questions from '../Question/Questions'
 import Label from '../Label/Label'
@@ -43,16 +43,24 @@ const DynamicQuestion = () => {
     }
     //all select mode
     const handleData = (e) => {
+        if(e.target.name=='mcq')
+            setnumOfQuestions(e.target.value)
         setStore((prev) => {
             return { ...prev, [e.target.name]: parseInt(e.target.value) }
+
         })
     }
     const addTechnology = () => {
         setSelectedValue([...selectedValue, options.filter(item => !selectedTech.includes(item))]);
     }
+    
+    const handleMcqData=()=>{
+        
+      }
         return (
             <>
                 <>
+                  {/* <ContextAPI.Provider value={{store,handleData,addTechnology}}> */}
                     <div className='container-fluid'>
                         <div className='row'>
                             <div className='col-sm-6'>
@@ -70,7 +78,7 @@ const DynamicQuestion = () => {
                                 </div>
                                 {    
                                     selectedValue.map(element => (
-                                        <Dropdown options={element} handleChange={handleChange} addTechnology={addTechnology} store={store} handleData={handleData} selectedValue={selectedValue} />
+                                        <Dropdown options={element} handleChange={handleChange} addTechnology={addTechnology} store={store} setnumOfQuestions={setnumOfQuestions} handleData={handleData} selectedValue={selectedValue} />
                                     ))
                                 }
                             </div>
@@ -83,9 +91,12 @@ const DynamicQuestion = () => {
                                         return <Questions />
                                     })
                                 }
+
+                                {!render || numOfQuestions!=0  &&<button className='btn btn-success'  onClick={handleMcqData}>Submit</button>}
                             </div>
                         </div>
                     </div>
+                    {/* </ContextAPI.Provider> */}
                 </>
             </>
         )
